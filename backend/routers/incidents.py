@@ -90,7 +90,11 @@ async def create_incident(
     t_phone = body.user_phone or (user.phone if user and user.phone else "+91 98765 43210")
     t_email = user.email if user and user.email else "tourist@vanrakshak.org"
 
-    inc_type = (body.incident_type or body.type or "EMERGENCY_SOS").upper()
+    raw_type = body.incident_type or body.type or "EMERGENCY_SOS"
+    if raw_type.lower() in ("fall", "medical", "wildlife", "other", "sos"):
+        inc_type = raw_type.lower()
+    else:
+        inc_type = raw_type.upper()
     inc_notes = body.notes or body.message or f"🚨 EMERGENCY SOS triggered by {t_name}. Immediate field response required."
 
     now_utc = datetime.utcnow()
