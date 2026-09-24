@@ -4,7 +4,7 @@ const defaultBase = typeof window !== 'undefined' && window.location.hostname !=
   ? `${window.location.protocol}//${window.location.host}`
   : 'http://localhost:8000'
 
-export const API_BASE = import.meta.env.VITE_API_URL || defaultBase
+export const API_BASE = (import.meta.env.VITE_API_URL || defaultBase).replace(/\/+$/, '')
 
 const api = axios.create({
   baseURL: API_BASE,

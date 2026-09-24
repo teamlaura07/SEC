@@ -4,7 +4,15 @@
  * Handles reconnection with exponential backoff.
  */
 
-const WS_URL = import.meta.env.VITE_WS_URL || 'ws://localhost:8000'
+import { API_BASE } from './api'
+
+const defaultWs = API_BASE.startsWith('https://')
+  ? API_BASE.replace('https://', 'wss://')
+  : API_BASE.startsWith('http://')
+    ? API_BASE.replace('http://', 'ws://')
+    : 'ws://localhost:8000'
+
+const WS_URL = import.meta.env.VITE_WS_URL || defaultWs
 const MAX_RETRIES = 10
 const BASE_DELAY_MS = 1000
 

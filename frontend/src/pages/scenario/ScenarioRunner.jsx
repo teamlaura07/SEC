@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react'
 import { Play, Terminal, CheckCircle, XCircle, Loader2, TreePine, RotateCcw } from 'lucide-react'
-import api from '../../lib/api'
+import api, { API_BASE } from '../../lib/api'
 import { initDeadReckoning, simulateStep } from '../../lib/deadReckoning'
 
 const SCENARIOS = [
@@ -370,7 +370,7 @@ export default function ScenarioRunner() {
           <span className="flex items-center gap-1"><CheckCircle size={12} className="text-forest-400" /> PASS</span>
           <span className="flex items-center gap-1"><XCircle size={12} className="text-red-400" /> FAIL</span>
           <span className="flex items-center gap-1"><span className="w-3 h-3 rounded bg-purple-900/40 border border-purple-700/40" /> NEW in v2.5</span>
-          <span className="ml-auto">Backend: http://localhost:8000 · WS: ws://localhost:8000/ws/incidents</span>
+          <span className="ml-auto font-mono text-[11px]">Backend: {API_BASE}</span>
         </div>
       </div>
     </div>

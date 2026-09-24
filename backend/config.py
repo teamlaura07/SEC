@@ -12,7 +12,8 @@ class Settings(BaseSettings):
     REFRESH_TOKEN_EXPIRE_DAYS: int = 30
     OWM_API_KEY: str = ""  # OpenWeatherMap — leave blank to use mock data
     USE_POSTGIS: bool = False
-    FERNET_KEY: str = "CHANGE_ME_IN_PRODUCTION_fernet_key_here_32="  # for encrypting visa_ref
+    FERNET_KEY: str = "voSvWRwM90XJisMWvVfFq08O-Kc4Fijf-iWns2ZRo8E="  # 32 url-safe base64 key for encrypting visa_ref
+    ALLOWED_ORIGINS: str = "*"
     APP_ENV: str = "development"
 
     class Config:

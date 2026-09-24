@@ -3,6 +3,7 @@
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 
+from config import settings
 from database import init_db
 from routers import auth, identity, trips, incidents, danger_zones, rangers, weather, advisories, coverage
 from websocket.manager import manager
@@ -16,9 +17,13 @@ app = FastAPI(
     version="2.5.0",
 )
 
+cors_origins = [o.strip() for o in settings.ALLOWED_ORIGINS.split(",") if o.strip()] if settings.ALLOWED_ORIGINS != "*" else ["*"]
+if "*" not in cors_origins and "http://localhost:5173" not in cors_origins:
+    cors_origins.extend(["http://localhost:5173", "http://localhost:3000"])
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://localhost:3000", "*"],
+    allow_origins=cors_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

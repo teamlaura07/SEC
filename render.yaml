@@ -1,0 +1,38 @@
+services:
+  # ---------------------------------------------------------------------------
+  # VanRakshak Backend API (FastAPI)
+  # ---------------------------------------------------------------------------
+  - type: web
+    name: vanrakshak-backend
+    runtime: python
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: DATABASE_URL
+        sync: false # Set from Neon Connection String in Render Dashboard
+      - key: SECRET_KEY
+        generateValue: true
+      - key: FERNET_KEY
+        sync: false # Set in Render Dashboard or leave default fallback
+      - key: ALLOWED_ORIGINS
+        value: "*"
+
+  # ---------------------------------------------------------------------------
+  # VanRakshak Frontend Web Portal (React / Vite Static Site)
+  # ---------------------------------------------------------------------------
+  - type: web
+    name: vanrakshak-frontend
+    runtime: static
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: ./dist
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    envVars:
+      - key: VITE_API_URL
+        sync: false # Set to https://<your-backend-service-name>.onrender.com

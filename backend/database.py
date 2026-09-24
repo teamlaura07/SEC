@@ -11,12 +11,16 @@ import threading
 
 # Strip aiosqlite prefix if present — use plain sqlite for sync engine
 db_url = settings.DATABASE_URL.replace("sqlite+aiosqlite", "sqlite")
+if db_url.startswith("postgres://"):
+    db_url = db_url.replace("postgres://", "postgresql://", 1)
 
 connect_args = {"check_same_thread": False} if "sqlite" in db_url else {}
 
 engine = create_engine(
     db_url,
     connect_args=connect_args,
+    pool_pre_ping=True,
+    pool_recycle=300,
     echo=(settings.APP_ENV == "development"),
 )
 
